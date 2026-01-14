@@ -1,0 +1,47 @@
+name: Create Monday.com Portfolio
+
+on:
+  workflow_dispatch:
+    inputs:
+      portfolio_name:
+        description: 'Portfolio name (default: Duetto)'
+        required: false
+        default: 'Duetto'
+      workspace_id:
+        description: 'Workspace ID (default: 13800719)'
+        required: false
+        default: '13800719'
+
+jobs:
+  create-portfolio:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Portfolio in Monday.com
+        env:
+          MONDAY_API_KEY: ${{ secrets.MONDAY_API_KEY }}
+        run: |
+          WORKSPACE_ID="${{ github.event.inputs.workspace_id || '13800719' }}"
+          PORTFOLIO_NAME="${{ github.event.inputs.portfolio_name || 'Duetto' }}"
+          
+          echo "Creating Portfolio '$PORTFOLIO_NAME' in workspace ID $WORKSPACE_ID..."
+          
+          RESPONSE=$(curl -s -X POST "https://api.monday.com/v2" \
+            -H "Authorization: $MONDAY_API_KEY" \
+            -H "Content-Type: application/json" \
+            -H "API-Version: 2024-10" \
+            -d "{\"query\": \"mutation { create_folder(workspace_id: $WORKSPACE_ID, name: \\\"$PORTFOLIO_NAME\\\") { id name } }\"}")
+          
+          echo "Response: $RESPONSE"
+          
+          if echo "$RESPONSE" | grep -q '"errors"'; then
+            echo "Error creating portfolio"
+            exit 1
+          fi
+          
+          if echo "$RESPONSE" | grep -q '"create_folder"'; then
+            echo "Successfully created Portfolio!"
+            echo "$RESPONSE" | python3 -c "import sys, json; d=json.load(sys.stdin); print(f\"Portfolio ID: {d['data']['create_folder']['id']}\nPortfolio Name: {d['data']['create_folder']['name']}\")"
+          fi

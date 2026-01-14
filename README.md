@@ -49,8 +49,25 @@ With variables:
 - **API Version**: `2024-10`
 - **Authentication**: Bearer token via `Authorization` header
 
+## GitHub Actions
+
+A GitHub Actions workflow is included that can be triggered manually to create the portfolio.
+
+### Setup
+
+1. Add `MONDAY_API_KEY` as a repository secret in GitHub Settings > Secrets and variables > Actions
+2. Go to Actions > "Create Monday.com Portfolio"
+3. Click "Run workflow" to create the portfolio
+
+### Manual Trigger
+
+The workflow supports custom inputs:
+- `portfolio_name`: Name of the portfolio (default: "Duetto")
+- `workspace_id`: Monday.com workspace ID (default: "13800719")
+
 ## Files
 
 - `create_portfolio.py` - Python script to create the portfolio
 - `create_duetto_portfolio.sh` - Shell script to create the portfolio
+- `.github/workflows/create-portfolio.yml` - GitHub Actions workflow
 - `Monday` - MCP server configuration for Monday.com
