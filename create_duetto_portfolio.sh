@@ -22,10 +22,11 @@ fi
 
 echo "Creating Portfolio '$PORTFOLIO_NAME' in workspace ID $WORKSPACE_ID..."
 
-# GraphQL mutation to create a folder (portfolio) in Monday.com
+# GraphQL mutation to create a portfolio in Monday.com
+# Note: folder_kind: portfolio is required to create a portfolio (not just a folder)
 QUERY=$(cat <<EOF
 mutation {
-    create_folder(workspace_id: $WORKSPACE_ID, name: "$PORTFOLIO_NAME") {
+    create_folder(workspace_id: $WORKSPACE_ID, name: "$PORTFOLIO_NAME", folder_kind: portfolio) {
         id
         name
     }

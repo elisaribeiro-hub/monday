@@ -36,10 +36,11 @@ def create_portfolio(api_key: str, workspace_id: str, name: str) -> dict:
         "API-Version": "2024-10"
     }
     
-    # GraphQL mutation to create a folder (portfolio) in Monday.com
+    # GraphQL mutation to create a portfolio in Monday.com
+    # Note: folder_kind: portfolio is required to create a portfolio (not just a folder)
     mutation = """
     mutation CreatePortfolio($workspace_id: ID!, $name: String!) {
-        create_folder(workspace_id: $workspace_id, name: $name) {
+        create_folder(workspace_id: $workspace_id, name: $name, folder_kind: portfolio) {
             id
             name
         }

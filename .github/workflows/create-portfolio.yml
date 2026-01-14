@@ -28,11 +28,12 @@ jobs:
           
           echo "Creating Portfolio '$PORTFOLIO_NAME' in workspace ID $WORKSPACE_ID..."
           
+          # Note: folder_kind: portfolio is required to create a portfolio (not just a folder)
           RESPONSE=$(curl -s -X POST "https://api.monday.com/v2" \
             -H "Authorization: $MONDAY_API_KEY" \
             -H "Content-Type: application/json" \
             -H "API-Version: 2024-10" \
-            -d "{\"query\": \"mutation { create_folder(workspace_id: $WORKSPACE_ID, name: \\\"$PORTFOLIO_NAME\\\") { id name } }\"}")
+            -d "{\"query\": \"mutation { create_folder(workspace_id: $WORKSPACE_ID, name: \\\"$PORTFOLIO_NAME\\\", folder_kind: portfolio) { id name } }\"}")
           
           echo "Response: $RESPONSE"
           

@@ -10,6 +10,7 @@ Create a Portfolio named **"Duetto"** (Salesforce account name) in Monday.com wo
 
 - Monday.com API key with appropriate permissions
 - Python 3 with `requests` library, OR
+- Node.js (v14+), OR
 - bash with `curl`
 
 ## Usage
@@ -26,18 +27,26 @@ MONDAY_API_KEY="your-api-key" ./create_duetto_portfolio.sh
 MONDAY_API_KEY="your-api-key" python3 create_portfolio.py
 ```
 
+### Using Node.js Script
+
+```bash
+MONDAY_API_KEY="your-api-key" node create_portfolio.js
+```
+
 ## GraphQL Mutation
 
 The scripts use the following GraphQL mutation to create the portfolio:
 
 ```graphql
 mutation CreatePortfolio($workspace_id: ID!, $name: String!) {
-    create_folder(workspace_id: $workspace_id, name: $name) {
+    create_folder(workspace_id: $workspace_id, name: $name, folder_kind: portfolio) {
         id
         name
     }
 }
 ```
+
+**Note**: The `folder_kind: portfolio` parameter is required to create a portfolio specifically, rather than a regular folder.
 
 With variables:
 - `workspace_id`: `"13800719"`
@@ -68,6 +77,7 @@ The workflow supports custom inputs:
 ## Files
 
 - `create_portfolio.py` - Python script to create the portfolio
+- `create_portfolio.js` - Node.js script to create the portfolio
 - `create_duetto_portfolio.sh` - Shell script to create the portfolio
 - `.github/workflows/create-portfolio.yml` - GitHub Actions workflow
 - `Monday` - MCP server configuration for Monday.com
