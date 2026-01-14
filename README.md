@@ -1,0 +1,56 @@
+# Monday.com Portfolio Creator
+
+This repository contains scripts to create a Portfolio in Monday.com using the GraphQL API.
+
+## Task
+
+Create a Portfolio named **"Duetto"** (Salesforce account name) in Monday.com workspace ID **13800719**.
+
+## Requirements
+
+- Monday.com API key with appropriate permissions
+- Python 3 with `requests` library, OR
+- bash with `curl`
+
+## Usage
+
+### Using Shell Script
+
+```bash
+MONDAY_API_KEY="your-api-key" ./create_duetto_portfolio.sh
+```
+
+### Using Python Script
+
+```bash
+MONDAY_API_KEY="your-api-key" python3 create_portfolio.py
+```
+
+## GraphQL Mutation
+
+The scripts use the following GraphQL mutation to create the portfolio:
+
+```graphql
+mutation CreatePortfolio($workspace_id: ID!, $name: String!) {
+    create_folder(workspace_id: $workspace_id, name: $name) {
+        id
+        name
+    }
+}
+```
+
+With variables:
+- `workspace_id`: `"13800719"`
+- `name`: `"Duetto"`
+
+## API Details
+
+- **Endpoint**: `https://api.monday.com/v2`
+- **API Version**: `2024-10`
+- **Authentication**: Bearer token via `Authorization` header
+
+## Files
+
+- `create_portfolio.py` - Python script to create the portfolio
+- `create_duetto_portfolio.sh` - Shell script to create the portfolio
+- `Monday` - MCP server configuration for Monday.com
